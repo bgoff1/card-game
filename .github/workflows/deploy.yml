@@ -1,0 +1,35 @@
+name: Deploy to Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install and build
+      run: |
+        npm ci
+        npm run build
+    - name: Deploy site to gh-pages branch
+      if: success()
+      uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
+      with:
+        repo-token: ${{ secrets.GH_PAT }}
+        commit-message: "Deployed to GitHub Pages through GitHub Action!"
+        site-directory: "build/pokemon-team-builder/"
+      env:
+        CI: true
