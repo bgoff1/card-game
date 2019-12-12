@@ -30,6 +30,6 @@ jobs:
       with:
         repo-token: ${{ secrets.GH_PAT }}
         commit-message: "Deploywebsocket-client"
-        site-directory: "build/pokemon-team-builder/"
+        site-directory: "build/"
       env:
         CI: true
