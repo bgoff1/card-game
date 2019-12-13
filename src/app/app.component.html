@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let card of cards" [ngClass]="{ 'font-red' : card.suit === '♥' || card.suit === '♦' }">
+    <span>{{ card.suit }}</span>
+    <span>{{ card.rank }}</span>
+  </li>
+</ul>
