@@ -20,16 +20,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install and build
+    - name: yarn install and build
       run: |
-        npm ci
-        npm run build
+        yarn
+        yarn build
     - name: Deploy site to gh-pages branch
       if: success()
       uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
       with:
         repo-token: ${{ secrets.GH_PAT }}
-        commit-message: "Deploywebsocket-client"
+        commit-message: "Deploy Frontend"
         site-directory: "build/"
       env:
         CI: true
