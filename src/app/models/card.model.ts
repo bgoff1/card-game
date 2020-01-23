@@ -1,4 +1,4 @@
 export interface Card {
-  rank: string;
-  suit: string;
+  name: string;
+  description: string;
 }
