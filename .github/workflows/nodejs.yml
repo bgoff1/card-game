@@ -1,8 +1,8 @@
 name: Node CI
 
 on: 
-  push:
-    branches-ignore: 
+  pull_request:
+    branches: 
       - master
 
 jobs:
@@ -20,10 +20,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: yarn install, build, and test
-      run: |
-        yarn
-        yarn test
-        yarn build
+    - name: Install dependencies
+      run: yarn
+    - name: Run unit tests
+      run: yarn test
+    - name: Build app
+      run: yarn build
       env:
         CI: true
