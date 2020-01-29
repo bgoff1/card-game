@@ -1,6 +1,27 @@
+<div style="min-height: 1em;">
+    <span style="float: left">MY HEALTH : {{ health }}</span>
+    <span style="float: right">{{opponentHealth }} : OPPONENTS HEALTH</span>
+</div>
+
+<hr>
+
 <ul>
-    <li *ngFor="let card of cards">
-        <span>{{ card.name }}</span>
-        <span>{{ card.description }}</span>
+    <li
+        *ngFor="let card of cards"
+        (click)="playCard(card)">
+        <span>
+            {{ card.name }} -- {{card.description }}
+        </span>
     </li>
 </ul>
+
+<hr>
+
+<div *ngIf="lastPlayedCard">
+    <h1>
+        Last Played Card Played by {{ lastPlayedByMe ? 'Me' : 'Them'}}
+    </h1>
+    <span>
+        {{ lastPlayedCard.name }} -- {{ lastPlayedCard.description }}
+    </span>
+</div>
