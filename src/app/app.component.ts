@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import websocketUrl from '../websocket-config';
 import { Card } from './models/card.model';
+import { WebsocketService } from './websocket/websocket.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,12 +9,28 @@ import { Card } from './models/card.model';
 })
 export class AppComponent implements OnInit {
   cards: Card[] = [];
+  lastPlayedCard: Card;
+  lastPlayedByMe: boolean;
+  health: number;
+  opponentHealth: number;
+  constructor(private websocketService: WebsocketService) {}
   ngOnInit() {
-    const socket = new WebSocket(websocketUrl);
-    socket.onmessage = (message: MessageEvent) => {
-      this.cards = JSON.parse(message.data);
-      console.log(this.cards);
-    };
-    socket.onclose = (event: CloseEvent) => console.log('Websocket Closed!');
+    this.websocketService.cardsInitialized$.subscribe(cards => {
+      this.cards = cards;
+    });
+    this.websocketService.cardPlayed$.subscribe(card => {
+      this.lastPlayedByMe = false;
+      this.lastPlayedCard = card;
+    });
+    this.websocketService.hero$.subscribe(matchup => {
+      this.health = matchup.me.health;
+      this.opponentHealth = matchup.you.health;
+    });
+  }
+
+  playCard(card: Card) {
+    this.lastPlayedByMe = true;
+    this.lastPlayedCard = card;
+    this.websocketService.userPlayCard(card);
   }
 }
